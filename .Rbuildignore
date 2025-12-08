@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.md$
+^LICENSE\.md$
+^examples$
+^getting_started\.R$
+^test_all_features\.R$
+^.*\.png$
+^\.git$
+^\.gitignore$
