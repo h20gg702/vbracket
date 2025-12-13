@@ -14,12 +14,14 @@ print.gg <- function(x, newpage = is.null(vp), vp = NULL, ...) {
 
   if (is.null(vb_legend)) {
     # No vbracket legend, use default ggplot2 print
-    ggplot2:::print.ggplot(x, newpage = newpage, vp = vp, ...)
+    print_ggplot <- getS3method("print", "ggplot", envir = asNamespace("ggplot2"))
+    print_ggplot(x, newpage = newpage, vp = vp, ...)
     return(invisible(x))
   }
 
   # First print the plot normally
-  ggplot2:::print.ggplot(x, newpage = newpage, vp = vp, ...)
+  print_ggplot <- getS3method("print", "ggplot", envir = asNamespace("ggplot2"))
+  print_ggplot(x, newpage = newpage, vp = vp, ...)
 
   # Now add the custom legend on top
   grid::seekViewport("layout")

@@ -4,14 +4,14 @@
 \alias{ggplot_add.vbracket_legend}
 \title{Add vbracket legend to ggplot}
 \usage{
-\method{ggplot_add}{vbracket_legend}(object, plot, object_name)
+\method{ggplot_add}{vbracket_legend}(object, plot, ...)
 }
 \arguments{
-\item{object}{A ggplot object}
+\item{object}{A vbracket_legend object}
 
-\item{plot}{A vbracket_legend object}
+\item{plot}{A ggplot object}
 
-\item{object_name}{Not used}
+\item{...}{Additional arguments (not used)}
 }
 \description{
 Add vbracket legend to ggplot

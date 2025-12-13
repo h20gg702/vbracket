@@ -1,3 +1,8 @@
+#' @importFrom stats setNames
+#' @importFrom grDevices dev.size
+#' @importFrom utils getS3method
+NULL
+
 #' Add legend with brackets to a ggplot object
 #'
 #' This function allows you to add a custom legend with brackets using
@@ -94,11 +99,11 @@ legend_bracket <- function(labels,
 
 #' Add vbracket legend to ggplot
 #'
-#' @param object A ggplot object
-#' @param plot A vbracket_legend object
-#' @param object_name Not used
+#' @param object A vbracket_legend object
+#' @param plot A ggplot object
+#' @param ... Additional arguments (not used)
 #' @export
-ggplot_add.vbracket_legend <- function(object, plot, object_name) {
+ggplot_add.vbracket_legend <- function(object, plot, ...) {
 
   # Remove original legend from plot
   plot <- plot + theme(legend.position = "none")
@@ -218,9 +223,6 @@ ggplot_add.vbracket_legend <- function(object, plot, object_name) {
 #' Plot ggplot with vbracket legend
 #'
 #' @param x A ggplot object
-#' @param newpage Draw on new page
-#' @param vp Viewport
-#' @param ... Additional arguments
 #' @keywords internal
 ggplot_build.gg <- function(x) {
   NextMethod()
@@ -229,9 +231,6 @@ ggplot_build.gg <- function(x) {
 #' Print method for ggplot with vbracket legend
 #'
 #' @param x A ggplot object with vbracket legend
-#' @param newpage Draw on new page
-#' @param vp Viewport
-#' @param ... Additional arguments
 #' @keywords internal
 ggplot_gtable.gg <- function(x) {
   NextMethod()

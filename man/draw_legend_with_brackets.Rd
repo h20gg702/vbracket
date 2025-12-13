@@ -54,6 +54,10 @@ draw_legend_with_brackets(
 \item{sig_size}{Numeric. Font size for significance symbols (default 11)}
 
 \item{sig_face}{Character. Font face for significance symbols (default "plain")}
+
+\item{output_width}{Numeric. Output figure width in inches (optional, for METHOD 2)}
+
+\item{output_height}{Numeric. Output figure height in inches (optional, for METHOD 2)}
 }
 \value{
 A gTree object containing the custom legend

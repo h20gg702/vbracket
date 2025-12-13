@@ -18,6 +18,8 @@
 #' @param title_face Character. Font face for title (default "bold")
 #' @param sig_size Numeric. Font size for significance symbols (default 11)
 #' @param sig_face Character. Font face for significance symbols (default "plain")
+#' @param output_width Numeric. Output figure width in inches (optional, for METHOD 2)
+#' @param output_height Numeric. Output figure height in inches (optional, for METHOD 2)
 #'
 #' @return A gTree object containing the custom legend
 #' @export

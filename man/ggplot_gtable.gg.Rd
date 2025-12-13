@@ -8,12 +8,6 @@
 }
 \arguments{
 \item{x}{A ggplot object with vbracket legend}
-
-\item{newpage}{Draw on new page}
-
-\item{vp}{Viewport}
-
-\item{...}{Additional arguments}
 }
 \description{
 Print method for ggplot with vbracket legend
