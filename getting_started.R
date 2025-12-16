@@ -327,7 +327,7 @@ cat("===========================================================================
 
 cat("vbracket automatically inherits fonts from your ggplot theme...\n\n")
 
-fonts <- c("sans", "serif", "mono")
+fonts <- c("sans", "Times New Roman", "mono")
 
 for (font in fonts) {
   p7 <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +

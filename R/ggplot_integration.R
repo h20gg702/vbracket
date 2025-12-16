@@ -220,22 +220,6 @@ ggplot_add.vbracket_legend <- function(object, plot, ...) {
 }
 
 
-#' Plot ggplot with vbracket legend
-#'
-#' @param x A ggplot object
-#' @keywords internal
-ggplot_build.gg <- function(x) {
-  NextMethod()
-}
-
-#' Print method for ggplot with vbracket legend
-#'
-#' @param x A ggplot object with vbracket legend
-#' @keywords internal
-ggplot_gtable.gg <- function(x) {
-  NextMethod()
-}
-
 #' Print a ggplot with vbracket overlay
 #'
 #' @param x ggplot object

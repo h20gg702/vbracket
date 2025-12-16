@@ -1,17 +1,16 @@
 Package: vbracket
 Type: Package
-Title: Custom Legends with Statistical Comparison Brackets for ggplot2
-Version: 1.0.0
+Title: Custom Legends with Statistical Comparison Brackets
+Version: 1.0.1
 Authors@R: person("Yoshiaki", "Sato",
                   email = "h20gg702@outlook.jp",
                   role = c("aut", "cre"),
                   comment = c(ORCID = "0000-0003-3375-5189"))
-Description: Add publication-quality custom legends with vertical brackets to
-    ggplot2 plots. Designed for displaying statistical comparisons between groups,
+Description: Add publication-quality custom legends with vertical brackets. Designed for displaying statistical comparisons between groups,
     commonly used in scientific publications for showing significance levels.
     Features include adaptive positioning, automatic bracket spacing for overlapping
     comparisons, font family inheritance, and support for asterisks, p-values,
-    or custom labels.
+    or custom labels. Compatible with 'ggplot2' graphics.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends:

@@ -8,3 +8,4 @@
 ^.*\.png$
 ^\.git$
 ^\.gitignore$
+^CRAN-SUBMISSION$

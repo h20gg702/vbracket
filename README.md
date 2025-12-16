@@ -234,12 +234,12 @@ ggsave("large.png", p, width = 8, height = 6)
 vbracket automatically inherits font family from your ggplot theme:
 
 ```r
-# Sans-serif font (default)
+# Sans-serif font
 p + theme_classic(base_family = "sans") +
     legend_bracket(...)
 
-# Serif font (for publications)
-p + theme_classic(base_family = "serif") +
+# Times New Roman (recommended for scientific publications)
+p + theme_classic(base_family = "Times New Roman") +
     legend_bracket(...)
 
 # Monospace font
@@ -247,8 +247,8 @@ p + theme_classic(base_family = "mono") +
     legend_bracket(...)
 ```
 
-| Sans | Serif | Mono |
-|------|-------|------|
+| Sans | Times New Roman | Mono |
+|------|-----------------|------|
 | ![](examples/example7_font_sans.png) | ![](examples/example7_font_serif.png) | ![](examples/example7_font_mono.png) |
 
 ### Example 8: Custom Text Sizes
