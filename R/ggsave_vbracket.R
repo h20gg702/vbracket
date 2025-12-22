@@ -12,14 +12,15 @@
 #' @param dpi DPI for raster devices
 #' @param ... Additional arguments passed to ggsave()
 #'
+#' @return No return value, called for its side effects. Saves the plot (including the vbracket legend, if present) to the file specified by \code{filename}.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' p <- ggplot(data, aes(x, y, color = group)) +
 #'   geom_point() +
 #'   legend_bracket(labels, colors, comparisons)
 #'
-#' ggsave_vbracket("plot.pdf", p, width = 8, height = 6)
+#' ggsave_vbracket(file.path(tempdir(), "plot.pdf"), p, width = 8, height = 6)
 #' }
 ggsave_vbracket <- function(filename, plot, device = NULL, width = NA, height = NA,
                            units = c("in", "cm", "mm", "px"), dpi = 300, ...) {

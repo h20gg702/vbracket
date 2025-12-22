@@ -33,8 +33,8 @@ source("R/print_method.R")
 source("R/ggsave_vbracket.R")
 cat("✅ Package loaded successfully!\n\n")
 
-# Create output directory
-output_dir <- "test_all_features_output"
+# Create output directory in temp
+output_dir <- file.path(tempdir(), "test_all_features_output")
 dir.create(output_dir, showWarnings = FALSE)
 cat(sprintf("Output directory: %s\n\n", output_dir))
 

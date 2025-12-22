@@ -80,8 +80,8 @@ cat("✅ Data prepared!\n")
 cat("   - Groups:", paste(groups, collapse=", "), "\n")
 cat("   - Time points:", paste(days, collapse=", "), "days\n\n")
 
-# Create output directory
-output_dir <- "getting_started_output"
+# Create output directory in temp
+output_dir <- file.path(tempdir(), "getting_started_output")
 dir.create(output_dir, showWarnings = FALSE)
 cat("Output directory:", output_dir, "\n\n")
 

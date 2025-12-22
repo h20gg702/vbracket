@@ -15,6 +15,10 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+Invisibly returns the input ggplot object (classes \code{"gg"} and \code{"ggplot"}).
+  Called for its side effects: rendering the plot to the current graphics device with the vbracket legend overlay if present.
+}
 \description{
 This overrides the default ggplot print method to add brackets automatically
 }

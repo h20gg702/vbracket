@@ -6,6 +6,8 @@
 #' @param newpage Draw on new page (default TRUE)
 #' @param vp Viewport to draw in
 #' @param ... Additional arguments
+#' @return Invisibly returns the input ggplot object (classes \code{"gg"} and \code{"ggplot"}).
+#'   Called for its side effects: rendering the plot to the current graphics device with the vbracket legend overlay if present.
 #' @export
 print.gg <- function(x, newpage = is.null(vp), vp = NULL, ...) {
 

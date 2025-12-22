@@ -34,14 +34,14 @@ NULL
 #' @return A vbracket_legend object
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' p <- ggplot(data, aes(x, y, color = group)) + geom_point()
 #' p + legend_bracket(labels, colors, comparisons,
 #'                    position = "topleft",
 #'                    output_width = 8, output_height = 6)
 #'
 #' # Then use regular ggsave with same dimensions
-#' ggsave("plot.pdf", p, width = 8, height = 6)
+#' ggsave(file.path(tempdir(), "plot.pdf"), p, width = 8, height = 6)
 #' }
 legend_bracket <- function(labels,
                           colors,
@@ -102,6 +102,8 @@ legend_bracket <- function(labels,
 #' @param object A vbracket_legend object
 #' @param plot A ggplot object
 #' @param ... Additional arguments (not used)
+#' @return A ggplot object (classes \code{"gg"} and \code{"ggplot"}) with the vbracket legend incorporated.
+#'   The plot's default legend is typically suppressed and a custom vbracket legend showing statistical comparison brackets is added.
 #' @export
 ggplot_add.vbracket_legend <- function(object, plot, ...) {
 

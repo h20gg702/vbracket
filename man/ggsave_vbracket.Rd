@@ -32,16 +32,19 @@ ggsave_vbracket(
 
 \item{...}{Additional arguments passed to ggsave()}
 }
+\value{
+No return value, called for its side effects. Saves the plot (including the vbracket legend, if present) to the file specified by \code{filename}.
+}
 \description{
 This function is a wrapper around ggsave() that properly handles vbracket legends.
 Use this instead of ggsave() when your plot has a legend_bracket().
 }
 \examples{
-\dontrun{
+\donttest{
 p <- ggplot(data, aes(x, y, color = group)) +
   geom_point() +
   legend_bracket(labels, colors, comparisons)
 
-ggsave_vbracket("plot.pdf", p, width = 8, height = 6)
+ggsave_vbracket(file.path(tempdir(), "plot.pdf"), p, width = 8, height = 6)
 }
 }

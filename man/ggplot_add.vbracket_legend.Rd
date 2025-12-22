@@ -13,6 +13,10 @@
 
 \item{...}{Additional arguments (not used)}
 }
+\value{
+A ggplot object (classes \code{"gg"} and \code{"ggplot"}) with the vbracket legend incorporated.
+  The plot's default legend is typically suppressed and a custom vbracket legend showing statistical comparison brackets is added.
+}
 \description{
 Add vbracket legend to ggplot
 }

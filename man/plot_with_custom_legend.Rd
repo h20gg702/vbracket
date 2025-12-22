@@ -32,11 +32,15 @@ plot_with_custom_legend(
 
 \item{title}{Legend title}
 }
+\value{
+A ggplot object (classes \code{"gg"} and \code{"ggplot"}) with the vbracket legend incorporated.
+  The plot's default legend is typically suppressed and a custom vbracket legend showing statistical comparison brackets is added.
+}
 \description{
 Remove ggplot2's legend and add a custom legend with brackets
 }
 \examples{
-\dontrun{
+\donttest{
 p <- ggplot(data, aes(x, y, color = group)) + geom_line()
 comps <- add_bracket_comparisons(c("A", "B", "*"))
 plot_with_custom_legend(p, c("A", "B"), c("red", "blue"), comps)

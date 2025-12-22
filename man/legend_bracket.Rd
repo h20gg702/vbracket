@@ -82,13 +82,13 @@ This function allows you to add a custom legend with brackets using
 the + operator, similar to ggplot2 layers.
 }
 \examples{
-\dontrun{
+\donttest{
 p <- ggplot(data, aes(x, y, color = group)) + geom_point()
 p + legend_bracket(labels, colors, comparisons,
                    position = "topleft",
                    output_width = 8, output_height = 6)
 
 # Then use regular ggsave with same dimensions
-ggsave("plot.pdf", p, width = 8, height = 6)
+ggsave(file.path(tempdir(), "plot.pdf"), p, width = 8, height = 6)
 }
 }

@@ -67,12 +67,12 @@ This function draws a completely custom legend outside of ggplot2's system,
 with vertical brackets showing comparisons.
 }
 \examples{
-\dontrun{
+\donttest{
 labels <- c("WT", "WT/Dox", "CH3+5")
 colors <- c("green", "orange", "blue")
 comps <- data.frame(group1 = "WT", group2 = "WT/Dox", label = "*")
 legend_grob <- draw_legend_with_brackets(labels, colors, comps,
-                                         text_family = "serif",
+                                         text_family = "Times New Roman",
                                          text_size = 12)
 grid.draw(legend_grob)
 }

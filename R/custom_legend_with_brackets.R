@@ -25,12 +25,12 @@
 #' @export
 #' @import grid
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' labels <- c("WT", "WT/Dox", "CH3+5")
 #' colors <- c("green", "orange", "blue")
 #' comps <- data.frame(group1 = "WT", group2 = "WT/Dox", label = "*")
 #' legend_grob <- draw_legend_with_brackets(labels, colors, comps,
-#'                                          text_family = "serif",
+#'                                          text_family = "Times New Roman",
 #'                                          text_size = 12)
 #' grid.draw(legend_grob)
 #' }
@@ -315,11 +315,13 @@ draw_legend_with_brackets <- function(labels,
 #' @param legend_width Width of legend
 #' @param title Legend title
 #'
+#' @return A ggplot object (classes \code{"gg"} and \code{"ggplot"}) with the vbracket legend incorporated.
+#'   The plot's default legend is typically suppressed and a custom vbracket legend showing statistical comparison brackets is added.
 #' @export
 #' @import ggplot2
 #' @import grid
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' p <- ggplot(data, aes(x, y, color = group)) + geom_line()
 #' comps <- add_bracket_comparisons(c("A", "B", "*"))
 #' plot_with_custom_legend(p, c("A", "B"), c("red", "blue"), comps)
