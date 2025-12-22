@@ -35,13 +35,19 @@ NULL
 #' @export
 #' @examples
 #' \donttest{
-#' p <- ggplot(data, aes(x, y, color = group)) + geom_point()
-#' p + legend_bracket(labels, colors, comparisons,
-#'                    position = "topleft",
-#'                    output_width = 8, output_height = 6)
+#' library(ggplot2)
+#' data <- data.frame(x = 1:10, y = 1:10, group = rep(c("A", "B"), each = 5))
+#' labels <- c("A", "B")
+#' colors <- c("A" = "red", "B" = "blue")
+#' comparisons <- add_bracket_comparisons(groups1 = "A", groups2 = "B", labels = "*")
+#'
+#' p <- ggplot(data, aes(x, y, color = group)) + geom_point() +
+#'   legend_bracket(labels, colors, comparisons,
+#'                  position = "topleft",
+#'                  output_width = 6, output_height = 4)
 #'
 #' # Then use regular ggsave with same dimensions
-#' ggsave(file.path(tempdir(), "plot.pdf"), p, width = 8, height = 6)
+#' ggsave(file.path(tempdir(), "plot.pdf"), p, width = 6, height = 4)
 #' }
 legend_bracket <- function(labels,
                           colors,

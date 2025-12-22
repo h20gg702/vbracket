@@ -41,8 +41,10 @@ Remove ggplot2's legend and add a custom legend with brackets
 }
 \examples{
 \donttest{
+library(ggplot2)
+data <- data.frame(x = 1:10, y = 1:10, group = rep(c("A", "B"), each = 5))
 p <- ggplot(data, aes(x, y, color = group)) + geom_line()
-comps <- add_bracket_comparisons(c("A", "B", "*"))
+comps <- add_bracket_comparisons(groups1 = "A", groups2 = "B", labels = "*")
 plot_with_custom_legend(p, c("A", "B"), c("red", "blue"), comps)
 }
 }

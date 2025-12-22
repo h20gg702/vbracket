@@ -30,9 +30,9 @@
 #' colors <- c("green", "orange", "blue")
 #' comps <- data.frame(group1 = "WT", group2 = "WT/Dox", label = "*")
 #' legend_grob <- draw_legend_with_brackets(labels, colors, comps,
-#'                                          text_family = "Times New Roman",
+#'                                          text_family = "sans",
 #'                                          text_size = 12)
-#' grid.draw(legend_grob)
+#' grid::grid.draw(legend_grob)
 #' }
 draw_legend_with_brackets <- function(labels,
                                      colors,
@@ -322,8 +322,10 @@ draw_legend_with_brackets <- function(labels,
 #' @import grid
 #' @examples
 #' \donttest{
+#' library(ggplot2)
+#' data <- data.frame(x = 1:10, y = 1:10, group = rep(c("A", "B"), each = 5))
 #' p <- ggplot(data, aes(x, y, color = group)) + geom_line()
-#' comps <- add_bracket_comparisons(c("A", "B", "*"))
+#' comps <- add_bracket_comparisons(groups1 = "A", groups2 = "B", labels = "*")
 #' plot_with_custom_legend(p, c("A", "B"), c("red", "blue"), comps)
 #' }
 plot_with_custom_legend <- function(plot,
