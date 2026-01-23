@@ -317,10 +317,12 @@ for (font in fonts) {
 cat("\n")
 
 # ----------------------------------------------------------------------------
-# TEST 9: Different Text Sizes
+# TEST 9: Different Text Sizes (Proportional Scaling - NEW in v1.1.0)
 # ----------------------------------------------------------------------------
-cat("TEST 9: Different Text Sizes (Adaptive Bracket Spacing)\n")
-cat("--------------------------------------------------------\n")
+cat("TEST 9: Different Text Sizes (Proportional Scaling - NEW in v1.1.0)\n")
+cat("--------------------------------------------------------------------\n")
+cat("text_size now automatically scales: line length/width, point size,\n")
+cat("spacing between items, and legend box height.\n\n")
 
 text_sizes <- list(
   list(text = 8, sig = 10, name = "small"),
@@ -409,7 +411,8 @@ cat("  - Bracket spacing adapts to figure size\n")
 cat("  - Bracket spacing adapts to text size\n")
 cat("  - Legend position adapts to plot dimensions\n")
 cat("  - Font family inherits from ggplot2 theme\n")
-cat("  - Asterisk symbols positioned lower for visual centering\n\n")
+cat("  - Asterisk symbols positioned lower for visual centering\n")
+cat("  - NEW v1.1.0: text_size proportionally scales all legend elements\n\n")
 
 cat("Total images generated: 26\n\n")
 

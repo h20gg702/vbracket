@@ -54,13 +54,23 @@ draw_legend_with_brackets <- function(labels,
 
   n_items <- length(labels)
 
+  # Calculate scale factor based on text_size (baseline = 10)
+  scale_factor <- text_size / 10
+
+  # Scale symbol dimensions with text_size
+  line_x_start <- 0.1                              # Start position (fixed)
+  line_x_end <- 0.1 + (0.15 * scale_factor)        # End position (scaled)
+  line_width <- 3 * scale_factor                   # Line width (scaled)
+  point_x <- (line_x_start + line_x_end) / 2       # Point at center of line
+  point_size <- 0.3 * scale_factor                 # Point size (scaled)
+  text_x_start <- line_x_end + 0.05                # Text starts after line + gap
+
   # Calculate height if not specified
   if (is.null(height)) {
-    # Auto-calculate based on number of items
-    # Use generous spacing to avoid overlap
-    min_item_spacing <- 0.055  # 5.5% per item minimum
-    title_height <- if (!is.null(title)) 0.10 else 0
-    height <- title_height + (n_items * min_item_spacing) + 0.05
+    # Auto-calculate based on number of items AND text_size
+    min_item_spacing <- 0.055 * scale_factor  # Scale spacing with text size
+    title_height <- if (!is.null(title)) 0.10 * scale_factor else 0
+    height <- title_height + (n_items * min_item_spacing) + (0.05 * scale_factor)
   }
 
   # Create viewport for legend
@@ -95,12 +105,12 @@ draw_legend_with_brackets <- function(labels,
       vp = legend_vp
     )
     grobs[[length(grobs) + 1]] <- title_grob
-    y_start <- y_start - 0.15
+    y_start <- y_start - (0.15 * scale_factor)
   }
 
   # Calculate item positions with spacing to prevent overlap
-  # Minimum spacing to ensure text and brackets don't overlap
-  min_spacing <- 0.055  # Minimum 5.5% spacing between items
+  # Minimum spacing scales with text size
+  min_spacing <- 0.055 * scale_factor
 
   available_height <- y_start - 0.05
 
@@ -137,9 +147,7 @@ draw_legend_with_brackets <- function(labels,
     margin_inches <- 0.15  # 0.15 inch margin
     margin_npc <- margin_inches / legend_width_inches
 
-    # Base X position for text start
-    text_x_start <- 0.3
-    # Calculate bracket X position
+    # Calculate bracket X position (using scaled text_x_start)
     bracket_x_base <- text_x_start + max_text_width_npc + margin_npc
 
   } else {
@@ -148,7 +156,6 @@ draw_legend_with_brackets <- function(labels,
       text_width_estimate <- nchar(label) * (text_size / 72) * 0.007
       max_text_width <- max(max_text_width, text_width_estimate)
     }
-    text_x_start <- 0.3
     bracket_x_base <- text_x_start + max_text_width + 0.12
   }
 
@@ -156,30 +163,30 @@ draw_legend_with_brackets <- function(labels,
   for (i in seq_along(labels)) {
     y_pos <- item_y_positions[i]
 
-    # Line symbol
+    # Line symbol (scaled)
     line_grob <- linesGrob(
-      x = c(0.1, 0.25),
+      x = c(line_x_start, line_x_end),
       y = c(y_pos, y_pos),
-      gp = gpar(col = colors[i], lwd = 3),
+      gp = gpar(col = colors[i], lwd = line_width),
       vp = legend_vp
     )
     grobs[[length(grobs) + 1]] <- line_grob
 
-    # Point symbol
+    # Point symbol (scaled)
     point_grob <- pointsGrob(
-      x = 0.175,
+      x = point_x,
       y = y_pos,
       pch = 19,
-      size = unit(0.3, "char"),
+      size = unit(point_size, "char"),
       gp = gpar(col = colors[i]),
       vp = legend_vp
     )
     grobs[[length(grobs) + 1]] <- point_grob
 
-    # Label text
+    # Label text (position adjusted for scaled line)
     text_grob <- textGrob(
       label = labels[i],
-      x = 0.3,
+      x = text_x_start,
       y = y_pos,
       just = "left",
       gp = gpar(fontsize = text_size, fontface = text_face, fontfamily = text_family),
@@ -228,6 +235,13 @@ draw_legend_with_brackets <- function(labels,
       }
     }
 
+    # Scale bracket dimensions with text_size
+    bracket_line_width <- 1.5 * scale_factor        # Bracket line width
+    bracket_connector_length <- 0.05 * scale_factor # Horizontal connector length
+    bracket_layer_spacing <- 0.10 * scale_factor    # Spacing between bracket layers
+    bracket_sig_offset <- 0.05 * scale_factor       # Offset for significance label
+    text_height_offset <- 0.015 * scale_factor      # Vertical offset to clear text
+
     for (i in seq_len(nrow(comparisons))) {
       group1 <- as.character(comparisons$group1[i])
       group2 <- as.character(comparisons$group2[i])
@@ -249,36 +263,35 @@ draw_legend_with_brackets <- function(labels,
 
       # Offset bracket endpoints to avoid overlapping with text
       # Text is centered at y position, so offset brackets slightly above/below
-      text_height_offset <- 0.015  # Small offset to clear text
       y1_bracket <- y1 + text_height_offset  # Top bracket slightly above text center
       y2_bracket <- y2 - text_height_offset  # Bottom bracket slightly below text center
 
       # Calculate bracket X position based on text width and layer
-      bracket_x <- bracket_x_base + (bracket_layers[i] * 0.10)
+      bracket_x <- bracket_x_base + (bracket_layers[i] * bracket_layer_spacing)
 
       # Vertical line (use offset positions)
       vert_line <- linesGrob(
         x = c(bracket_x, bracket_x),
         y = c(y2_bracket, y1_bracket),
-        gp = gpar(col = "black", lwd = 1.5),
+        gp = gpar(col = "black", lwd = bracket_line_width),
         vp = legend_vp
       )
       grobs[[length(grobs) + 1]] <- vert_line
 
       # Top horizontal connector - pointing LEFT (toward text)
       top_horiz <- linesGrob(
-        x = c(bracket_x - 0.05, bracket_x),
+        x = c(bracket_x - bracket_connector_length, bracket_x),
         y = c(y1_bracket, y1_bracket),
-        gp = gpar(col = "black", lwd = 1.5),
+        gp = gpar(col = "black", lwd = bracket_line_width),
         vp = legend_vp
       )
       grobs[[length(grobs) + 1]] <- top_horiz
 
       # Bottom horizontal connector - pointing LEFT (toward text)
       bottom_horiz <- linesGrob(
-        x = c(bracket_x - 0.05, bracket_x),
+        x = c(bracket_x - bracket_connector_length, bracket_x),
         y = c(y2_bracket, y2_bracket),
-        gp = gpar(col = "black", lwd = 1.5),
+        gp = gpar(col = "black", lwd = bracket_line_width),
         vp = legend_vp
       )
       grobs[[length(grobs) + 1]] <- bottom_horiz
@@ -287,7 +300,7 @@ draw_legend_with_brackets <- function(labels,
       y_mid <- (y1 + y2) / 2
       sig_text <- textGrob(
         label = sig_label,
-        x = bracket_x + 0.05,
+        x = bracket_x + bracket_sig_offset,
         just = "left",
         y = y_mid,
         gp = gpar(fontsize = sig_size, fontface = sig_face, fontfamily = text_family),

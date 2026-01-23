@@ -354,14 +354,19 @@ for (font in fonts) {
 cat("\n")
 
 # ----------------------------------------------------------------------------
-# EXAMPLE 8: Custom Text Sizes
+# EXAMPLE 8: Custom Text Sizes (with Proportional Scaling)
 # ----------------------------------------------------------------------------
 
 cat("============================================================================\n")
-cat("EXAMPLE 8: Custom Text Sizes\n")
+cat("EXAMPLE 8: Custom Text Sizes (with Proportional Scaling)\n")
 cat("============================================================================\n\n")
 
-cat("Customizing legend text size and significance symbol size...\n\n")
+cat("Customizing legend text size and significance symbol size...\n")
+cat("NEW in v1.1.0: text_size automatically scales all legend elements:\n")
+cat("  - Legend line length and width\n")
+cat("  - Point symbol size\n")
+cat("  - Spacing between items\n")
+cat("  - Legend box height\n\n")
 
 text_sizes <- list(
   list(text = 8, sig = 12, name = "small"),

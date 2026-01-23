@@ -1,7 +1,7 @@
 Package: vbracket
 Type: Package
 Title: Custom Legends with Statistical Comparison Brackets
-Version: 1.0.2
+Version: 1.1.0
 Authors@R: person("Yoshiaki", "Sato",
                   email = "h20gg702@outlook.jp",
                   role = c("aut", "cre"),
