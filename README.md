@@ -15,6 +15,8 @@ Custom legends with statistical comparison brackets for ggplot2
 - ✅ **Font Support** - Auto-inherits font family from ggplot2 theme (sans, serif, mono)
 - ✅ **Precise Positioning** - Uses actual rendered text width for accurate bracket placement
 - ✅ **Publication Ready** - Works with regular `ggsave()` for easy figure export
+- ✅ **Auto-Scaling** - Legend symbol size and spacing scale automatically with text_size (v1.1.0)
+- ✅ **Manual Override** - Fine-tune line_length, line_width, item_spacing individually (v1.2.0)
 
 ## Installation
 
@@ -274,6 +276,35 @@ p + legend_bracket(..., text_size = 12, sig_size = 18, ...)
 |--------------|----------------|---------------|
 | ![](examples/example8_textsize_small.png) | ![](examples/example8_textsize_medium.png) | ![](examples/example8_textsize_large.png) |
 
+### Example 9: Manual Override for Legend Symbol and Spacing (v1.2.0)
+
+By default, legend symbol size and item spacing scale automatically with `text_size`. You can override these individually:
+
+```r
+# Default auto-scaling (text_size controls everything)
+p + legend_bracket(labels, colors, comparisons,
+                   position = "topleft",
+                   text_size = 12,
+                   output_width = 6, output_height = 4)
+
+# Manual override: longer legend lines
+p + legend_bracket(..., text_size = 12, line_length = 0.08)
+
+# Manual override: thicker legend lines
+p + legend_bracket(..., text_size = 12, line_width = 6)
+
+# Manual override: more spacing between items
+p + legend_bracket(..., text_size = 12, item_spacing = 0.12)
+```
+
+| Default (auto) | line_length = 0.08 |
+|----------------|-------------------|
+| ![](examples/example9_manual_default.png) | ![](examples/example9_manual_line_length.png) |
+
+| line_width = 6 | item_spacing = 0.12 |
+|----------------|---------------------|
+| ![](examples/example9_manual_line_width.png) | ![](examples/example9_manual_item_spacing.png) |
+
 ## Main Functions
 
 ### `add_bracket_comparisons()`
@@ -299,9 +330,12 @@ Add custom legend with brackets to a ggplot object.
 - `output_width` - Output figure width in inches (required for METHOD 1)
 - `output_height` - Output figure height in inches (required for METHOD 1)
 - `bracket_margin` - Custom spacing between text and brackets (optional)
-- `text_size` - Legend text size (default: 10)
+- `text_size` - Legend text size (default: 10). Also controls auto-scaling of symbol size and spacing
 - `sig_size` - Significance symbol size (default: 11)
 - `text_family` - Font family (default: inherits from ggplot theme)
+- `line_length` - Manual override for legend symbol line length (default: NULL = auto-scaled by text_size)
+- `line_width` - Manual override for legend symbol line width (default: NULL = auto-scaled by text_size)
+- `item_spacing` - Manual override for vertical spacing between legend items (default: NULL = auto-scaled by text_size)
 
 **Returns:** A vbracket_legend object that can be added to ggplot
 

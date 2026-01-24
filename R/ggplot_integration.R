@@ -30,6 +30,9 @@ NULL
 #' @param bracket_margin Numeric. Custom horizontal spacing between legend text and brackets (default NULL = auto-adaptive)
 #' @param legend_x Numeric. Custom X position for legend box (0-1 scale, overrides adaptive positioning)
 #' @param legend_y Numeric. Custom Y position for legend box (0-1 scale, overrides adaptive positioning)
+#' @param line_length Numeric. Manual override for legend symbol line length (default NULL = auto-scaled by text_size)
+#' @param line_width Numeric. Manual override for legend symbol line width (default NULL = auto-scaled by text_size)
+#' @param item_spacing Numeric. Manual override for vertical spacing between legend items (default NULL = auto-scaled by text_size)
 #'
 #' @return A vbracket_legend object
 #' @export
@@ -70,7 +73,10 @@ legend_bracket <- function(labels,
                           output_height = NULL,
                           bracket_margin = NULL,
                           legend_x = NULL,
-                          legend_y = NULL) {
+                          legend_y = NULL,
+                          line_length = NULL,
+                          line_width = NULL,
+                          item_spacing = NULL) {
 
   # Create object with all parameters
   structure(
@@ -96,7 +102,10 @@ legend_bracket <- function(labels,
       output_height = output_height,
       bracket_margin = bracket_margin,
       legend_x = legend_x,
-      legend_y = legend_y
+      legend_y = legend_y,
+      line_length = line_length,
+      line_width = line_width,
+      item_spacing = item_spacing
     ),
     class = "vbracket_legend"
   )
@@ -203,7 +212,10 @@ ggplot_add.vbracket_legend <- function(object, plot, ...) {
       sig_face = object$sig_face,
       output_width = output_width,
       output_height = output_height,
-      bracket_margin = object$bracket_margin
+      bracket_margin = object$bracket_margin,
+      line_length = object$line_length,
+      line_width = object$line_width,
+      item_spacing = object$item_spacing
     )
 
     # Add legend as annotation (actual ggplot layer)
@@ -339,7 +351,10 @@ print_vbracket_plot <- function(x, ...) {
     title_size = vb_legend$title_size,
     title_face = vb_legend$title_face,
     sig_size = vb_legend$sig_size,
-    sig_face = vb_legend$sig_face
+    sig_face = vb_legend$sig_face,
+    line_length = vb_legend$line_length,
+    line_width = vb_legend$line_width,
+    item_spacing = vb_legend$item_spacing
   )
 
   grid::grid.draw(legend_grobs)

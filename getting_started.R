@@ -401,6 +401,99 @@ for (size_info in text_sizes) {
 cat("\n")
 
 # ----------------------------------------------------------------------------
+# EXAMPLE 9: Manual Override for Legend Symbol and Spacing (v1.2.0)
+# ----------------------------------------------------------------------------
+
+cat("============================================================================\n")
+cat("EXAMPLE 9: Manual Override for Legend Symbol and Spacing (v1.2.0)\n")
+cat("============================================================================\n\n")
+
+cat("NEW in v1.2.0: You can manually override auto-scaled values:\n")
+cat("  - line_length: Length of colored legend line\n")
+cat("  - line_width: Thickness of colored legend line\n")
+cat("  - item_spacing: Vertical spacing between legend items\n")
+cat("If NULL (default), these values are auto-scaled based on text_size.\n\n")
+
+# Default auto-scaling
+p9_default <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = volume - sd, ymax = volume + sd), width = 1.2, linewidth = 0.8) +
+  scale_color_manual(values = colors) +
+  scale_x_continuous(breaks = c(0, 5, 10, 15, 20, 25), limits = c(0, 27)) +
+  scale_y_continuous(breaks = seq(0, 2500, 500), limits = c(0, 2500)) +
+  labs(title = "Default (auto-scaling)", x = "Days",
+       y = expression(paste("Tumor Volume (mm"^3, ")"))) +
+  theme_classic(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none") +
+  legend_bracket(labels = groups, colors = colors, comparisons = comps1,
+                 position = "topleft", text_size = 12,
+                 output_width = 6, output_height = 4)
+ggsave(file.path(output_dir, "example9_manual_default.png"), p9_default, width = 6, height = 4, dpi = 300)
+cat("✅ Saved: example9_manual_default.png\n")
+
+# Manual line_length override
+p9_length <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = volume - sd, ymax = volume + sd), width = 1.2, linewidth = 0.8) +
+  scale_color_manual(values = colors) +
+  scale_x_continuous(breaks = c(0, 5, 10, 15, 20, 25), limits = c(0, 27)) +
+  scale_y_continuous(breaks = seq(0, 2500, 500), limits = c(0, 2500)) +
+  labs(title = "Manual: line_length = 0.08", x = "Days",
+       y = expression(paste("Tumor Volume (mm"^3, ")"))) +
+  theme_classic(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none") +
+  legend_bracket(labels = groups, colors = colors, comparisons = comps1,
+                 position = "topleft", text_size = 12,
+                 line_length = 0.08,  # Manual override
+                 output_width = 6, output_height = 4)
+ggsave(file.path(output_dir, "example9_manual_line_length.png"), p9_length, width = 6, height = 4, dpi = 300)
+cat("✅ Saved: example9_manual_line_length.png\n")
+
+# Manual line_width override
+p9_width <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = volume - sd, ymax = volume + sd), width = 1.2, linewidth = 0.8) +
+  scale_color_manual(values = colors) +
+  scale_x_continuous(breaks = c(0, 5, 10, 15, 20, 25), limits = c(0, 27)) +
+  scale_y_continuous(breaks = seq(0, 2500, 500), limits = c(0, 2500)) +
+  labs(title = "Manual: line_width = 6", x = "Days",
+       y = expression(paste("Tumor Volume (mm"^3, ")"))) +
+  theme_classic(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none") +
+  legend_bracket(labels = groups, colors = colors, comparisons = comps1,
+                 position = "topleft", text_size = 12,
+                 line_width = 6,  # Manual override
+                 output_width = 6, output_height = 4)
+ggsave(file.path(output_dir, "example9_manual_line_width.png"), p9_width, width = 6, height = 4, dpi = 300)
+cat("✅ Saved: example9_manual_line_width.png\n")
+
+# Manual item_spacing override
+p9_spacing <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = volume - sd, ymax = volume + sd), width = 1.2, linewidth = 0.8) +
+  scale_color_manual(values = colors) +
+  scale_x_continuous(breaks = c(0, 5, 10, 15, 20, 25), limits = c(0, 27)) +
+  scale_y_continuous(breaks = seq(0, 2500, 500), limits = c(0, 2500)) +
+  labs(title = "Manual: item_spacing = 0.12", x = "Days",
+       y = expression(paste("Tumor Volume (mm"^3, ")"))) +
+  theme_classic(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none") +
+  legend_bracket(labels = groups, colors = colors, comparisons = comps1,
+                 position = "topleft", text_size = 12,
+                 item_spacing = 0.12,  # Manual override
+                 output_width = 6, output_height = 4)
+ggsave(file.path(output_dir, "example9_manual_item_spacing.png"), p9_spacing, width = 6, height = 4, dpi = 300)
+cat("✅ Saved: example9_manual_item_spacing.png\n\n")
+
+# ----------------------------------------------------------------------------
 # Summary
 # ----------------------------------------------------------------------------
 
@@ -418,7 +511,8 @@ cat("  4. ✅ All legend positions (topleft, topright, bottomleft, bottomright)\
 cat("  5. ✅ Custom bracket margin adjustment\n")
 cat("  6. ✅ Adaptive positioning for different plot sizes\n")
 cat("  7. ✅ Automatic font family inheritance\n")
-cat("  8. ✅ Custom text sizes\n\n")
+cat("  8. ✅ Custom text sizes with auto-scaling (v1.1.0)\n")
+cat("  9. ✅ Manual override for line_length, line_width, item_spacing (v1.2.0)\n\n")
 
 cat("Main Functions:\n")
 cat("  - add_bracket_comparisons(): Define group comparisons\n")
@@ -431,8 +525,11 @@ cat("  - comparisons: Comparison data from add_bracket_comparisons()\n")
 cat("  - position: Legend position ('topleft', 'topright', 'bottomleft', 'bottomright')\n")
 cat("  - output_width/output_height: Output dimensions for proper bracket positioning\n")
 cat("  - bracket_margin: Space between text and brackets (optional)\n")
-cat("  - text_size: Legend text size (default: 9)\n")
-cat("  - sig_size: Significance symbol size (default: 14)\n\n")
+cat("  - text_size: Legend text size (default: 10, also controls auto-scaling)\n")
+cat("  - sig_size: Significance symbol size (default: 11)\n")
+cat("  - line_length: Manual override for legend line length (default: NULL = auto)\n")
+cat("  - line_width: Manual override for legend line width (default: NULL = auto)\n")
+cat("  - item_spacing: Manual override for item spacing (default: NULL = auto)\n\n")
 
 cat("Next Steps:\n")
 cat("  1. Review the example plots in the output directory\n")

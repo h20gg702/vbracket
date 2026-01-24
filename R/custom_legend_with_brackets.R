@@ -50,17 +50,40 @@ draw_legend_with_brackets <- function(labels,
                                      sig_size = 11,
                                      sig_face = "plain",
                                      output_width = NULL,
-                                     output_height = NULL) {
+                                     output_height = NULL,
+                                     line_length = NULL,
+                                     line_width = NULL,
+                                     item_spacing = NULL) {
 
   n_items <- length(labels)
 
   # Calculate scale factor based on text_size (baseline = 10)
   scale_factor <- text_size / 10
 
+  # Determine line_length - use manual override or auto-scale
+  if (!is.null(line_length)) {
+    line_length_val <- line_length
+  } else {
+    line_length_val <- 0.15 * scale_factor  # Line length (auto-scaled)
+  }
+
+  # Determine line_width - use manual override or auto-scale
+  if (!is.null(line_width)) {
+    line_width_val <- line_width
+  } else {
+    line_width_val <- 3 * scale_factor      # Line width (auto-scaled)
+  }
+
+  # Determine item_spacing - use manual override or auto-scale
+  if (!is.null(item_spacing)) {
+    min_item_spacing <- item_spacing
+  } else {
+    min_item_spacing <- 0.055 * scale_factor  # Scale spacing with text size
+  }
+
   # Scale symbol dimensions with text_size
   line_x_start <- 0.1                              # Start position (fixed)
-  line_x_end <- 0.1 + (0.15 * scale_factor)        # End position (scaled)
-  line_width <- 3 * scale_factor                   # Line width (scaled)
+  line_x_end <- 0.1 + line_length_val              # End position
   point_x <- (line_x_start + line_x_end) / 2       # Point at center of line
   point_size <- 0.3 * scale_factor                 # Point size (scaled)
   text_x_start <- line_x_end + 0.05                # Text starts after line + gap
@@ -68,7 +91,6 @@ draw_legend_with_brackets <- function(labels,
   # Calculate height if not specified
   if (is.null(height)) {
     # Auto-calculate based on number of items AND text_size
-    min_item_spacing <- 0.055 * scale_factor  # Scale spacing with text size
     title_height <- if (!is.null(title)) 0.10 * scale_factor else 0
     height <- title_height + (n_items * min_item_spacing) + (0.05 * scale_factor)
   }
@@ -109,22 +131,19 @@ draw_legend_with_brackets <- function(labels,
   }
 
   # Calculate item positions with spacing to prevent overlap
-  # Minimum spacing scales with text size
-  min_spacing <- 0.055 * scale_factor
-
   available_height <- y_start - 0.05
 
   # Use even spacing, but enforce minimum
   ideal_spacing <- available_height / (n_items + 1)
-  item_spacing <- max(min_spacing, ideal_spacing)
+  item_spacing_val <- max(min_item_spacing, ideal_spacing)
 
   # If items don't fit, warn user
-  if (item_spacing * n_items > available_height) {
+  if (item_spacing_val * n_items > available_height) {
     warning("Legend height (", round(height, 3), ") may be too small for ", n_items,
-            " items. Recommend height >= ", round((n_items * min_spacing) + 0.15, 2))
+            " items. Recommend height >= ", round((n_items * min_item_spacing) + 0.15, 2))
   }
 
-  item_y_positions <- seq(y_start - item_spacing, y_start - (n_items * item_spacing), length.out = n_items)
+  item_y_positions <- seq(y_start - item_spacing_val, y_start - (n_items * item_spacing_val), length.out = n_items)
   names(item_y_positions) <- labels
 
   # Calculate maximum text width to position brackets correctly
@@ -167,7 +186,7 @@ draw_legend_with_brackets <- function(labels,
     line_grob <- linesGrob(
       x = c(line_x_start, line_x_end),
       y = c(y_pos, y_pos),
-      gp = gpar(col = colors[i], lwd = line_width),
+      gp = gpar(col = colors[i], lwd = line_width_val),
       vp = legend_vp
     )
     grobs[[length(grobs) + 1]] <- line_grob

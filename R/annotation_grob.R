@@ -12,7 +12,10 @@ create_annotation_legend_grob <- function(labels, colors, comparisons = NULL,
                                          title_size = 11, title_face = "bold",
                                          sig_size = 11, sig_face = "plain",
                                          output_width = 8, output_height = 6,
-                                         bracket_margin = NULL) {
+                                         bracket_margin = NULL,
+                                         line_length = NULL,
+                                         line_width = NULL,
+                                         item_spacing = NULL) {
 
   # Store all parameters in the grob (use gTree not grob)
   gTree(
@@ -34,6 +37,9 @@ create_annotation_legend_grob <- function(labels, colors, comparisons = NULL,
     output_width = output_width,
     output_height = output_height,
     bracket_margin = bracket_margin,
+    line_length = line_length,
+    line_width = line_width,
+    item_spacing = item_spacing,
     cl = "vbracket_annotation_grob"
   )
 }
@@ -50,20 +56,39 @@ makeContent.vbracket_annotation_grob <- function(x) {
 
   # Calculate dimensions
   n_items <- length(x$labels)
-  height <- x$height
-  if (is.null(height)) {
+
+  # Determine item spacing - use manual override or auto-scale
+  if (!is.null(x$item_spacing)) {
+    item_spacing_val <- x$item_spacing
+  } else {
     # Adaptive vertical spacing based on output width AND text_size
     plot_width <- x$output_width
     base_spacing <- if (!is.null(plot_width) && plot_width < 5) 0.08 else 0.055
     # Scale spacing with text size
-    height <- n_items * base_spacing * scale_factor
+    item_spacing_val <- base_spacing * scale_factor
   }
 
-  # Scale symbol dimensions with text_size
-  line_length <- 0.04 * scale_factor      # Length of colored line
-  line_width <- 3 * scale_factor          # Width of colored line
+  height <- x$height
+  if (is.null(height)) {
+    height <- n_items * item_spacing_val
+  }
+
+  # Determine line_length - use manual override or auto-scale
+  if (!is.null(x$line_length)) {
+    line_length <- x$line_length
+  } else {
+    line_length <- 0.04 * scale_factor      # Length of colored line (auto-scaled)
+  }
+
+  # Determine line_width - use manual override or auto-scale
+  if (!is.null(x$line_width)) {
+    line_width <- x$line_width
+  } else {
+    line_width <- 3 * scale_factor          # Width of colored line (auto-scaled)
+  }
+
   line_start <- 0.01                      # Start position (fixed)
-  line_end <- line_start + line_length    # End position (scaled)
+  line_end <- line_start + line_length    # End position
   text_start <- line_end + 0.01           # Text starts after line + small gap
 
   # Background rectangle (white, no border)
