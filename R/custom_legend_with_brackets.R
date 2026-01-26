@@ -53,7 +53,8 @@ draw_legend_with_brackets <- function(labels,
                                      output_height = NULL,
                                      line_length = NULL,
                                      line_width = NULL,
-                                     item_spacing = NULL) {
+                                     item_spacing = NULL,
+                                     bracket_layer_spacing = NULL) {
 
   n_items <- length(labels)
 
@@ -216,48 +217,19 @@ draw_legend_with_brackets <- function(labels,
 
   # Add brackets if comparisons provided
   if (!is.null(comparisons) && nrow(comparisons) > 0) {
-    # Detect overlapping brackets and assign horizontal offsets
-    bracket_layers <- rep(0, nrow(comparisons))
-
-    for (i in seq_len(nrow(comparisons))) {
-      group1_i <- as.character(comparisons$group1[i])
-      group2_i <- as.character(comparisons$group2[i])
-
-      if (!group1_i %in% names(item_y_positions) || !group2_i %in% names(item_y_positions)) {
-        next
-      }
-
-      y1_i <- item_y_positions[group1_i]
-      y2_i <- item_y_positions[group2_i]
-      range_i <- c(min(y1_i, y2_i), max(y1_i, y2_i))
-
-      # Check for overlap with previous brackets
-      if (i > 1) {
-        for (j in 1:(i-1)) {
-          group1_j <- as.character(comparisons$group1[j])
-          group2_j <- as.character(comparisons$group2[j])
-
-          if (!group1_j %in% names(item_y_positions) || !group2_j %in% names(item_y_positions)) {
-            next
-          }
-
-          y1_j <- item_y_positions[group1_j]
-          y2_j <- item_y_positions[group2_j]
-          range_j <- c(min(y1_j, y2_j), max(y1_j, y2_j))
-
-          # Check if ranges overlap
-          if (range_i[1] <= range_j[2] && range_i[2] >= range_j[1]) {
-            # Overlaps - use next layer
-            bracket_layers[i] <- max(bracket_layers[i], bracket_layers[j] + 1)
-          }
-        }
-      }
-    }
+    # Assign sequential layers to ALL brackets (equal spacing)
+    # Each bracket gets its own layer: 0, 1, 2, ...
+    bracket_layers <- seq(0, nrow(comparisons) - 1)
 
     # Scale bracket dimensions with text_size
     bracket_line_width <- 1.5 * scale_factor        # Bracket line width
     bracket_connector_length <- 0.05 * scale_factor # Horizontal connector length
-    bracket_layer_spacing <- 0.10 * scale_factor    # Spacing between bracket layers
+    # Determine bracket_layer_spacing - use manual override or auto-scale
+    if (!is.null(bracket_layer_spacing)) {
+      bracket_layer_spacing_val <- bracket_layer_spacing
+    } else {
+      bracket_layer_spacing_val <- 0.10 * scale_factor    # Spacing between bracket layers (auto-scaled)
+    }
     bracket_sig_offset <- 0.05 * scale_factor       # Offset for significance label
     text_height_offset <- 0.015 * scale_factor      # Vertical offset to clear text
 
@@ -286,7 +258,7 @@ draw_legend_with_brackets <- function(labels,
       y2_bracket <- y2 - text_height_offset  # Bottom bracket slightly below text center
 
       # Calculate bracket X position based on text width and layer
-      bracket_x <- bracket_x_base + (bracket_layers[i] * bracket_layer_spacing)
+      bracket_x <- bracket_x_base + (bracket_layers[i] * bracket_layer_spacing_val)
 
       # Vertical line (use offset positions)
       vert_line <- linesGrob(

@@ -15,7 +15,8 @@ create_annotation_legend_grob <- function(labels, colors, comparisons = NULL,
                                          bracket_margin = NULL,
                                          line_length = NULL,
                                          line_width = NULL,
-                                         item_spacing = NULL) {
+                                         item_spacing = NULL,
+                                         bracket_layer_spacing = NULL) {
 
   # Store all parameters in the grob (use gTree not grob)
   gTree(
@@ -40,6 +41,7 @@ create_annotation_legend_grob <- function(labels, colors, comparisons = NULL,
     line_length = line_length,
     line_width = line_width,
     item_spacing = item_spacing,
+    bracket_layer_spacing = bracket_layer_spacing,
     cl = "vbracket_annotation_grob"
   )
 }
@@ -184,61 +186,49 @@ makeContent.vbracket_annotation_grob <- function(x) {
 
     bracket_x_base <- x$x + text_start + text_width + bracket_margin
 
-    # Check for overlapping brackets
-    bracket_layers <- rep(0, nrow(x$comparisons))
-    for (i in seq_len(nrow(x$comparisons))) {
-      if (i > 1) {
-        y1_i <- item_positions[as.character(x$comparisons$group1[i])]
-        y2_i <- item_positions[as.character(x$comparisons$group2[i])]
-        min_y_i <- min(y1_i, y2_i)
-        max_y_i <- max(y1_i, y2_i)
+    # Assign sequential layers to ALL brackets (equal spacing)
+    # Each bracket gets its own layer: 0, 1, 2, ...
+    bracket_layers <- seq(0, nrow(x$comparisons) - 1)
 
-        for (j in seq_len(i - 1)) {
-          y1_j <- item_positions[as.character(x$comparisons$group1[j])]
-          y2_j <- item_positions[as.character(x$comparisons$group2[j])]
-          min_y_j <- min(y1_j, y2_j)
-          max_y_j <- max(y1_j, y2_j)
+    # Determine bracket layer spacing - use manual override or auto-calculate
+    if (!is.null(x$bracket_layer_spacing)) {
+      # Use manual override
+      layer_spacing <- x$bracket_layer_spacing
+    } else {
+      # Auto-calculate based on:
+      # 1. Label type (asterisks vs text)
+      # 2. Text size (sig_size)
+      # 3. Figure size (output_width)
 
-          if (!(max_y_i < min_y_j || min_y_i > max_y_j)) {
-            bracket_layers[i] <- max(bracket_layers[i], bracket_layers[j] + 1)
-          }
+      all_asterisks <- all(grepl("^\\*+$", x$comparisons$label))
+
+      # Base spacing
+      if (all_asterisks) {
+        base_spacing <- 0.06  # Narrow for asterisks
+      } else {
+        base_spacing <- 0.10  # Wider for text
+      }
+
+      # Adjust for figure size - smaller figures need relatively more spacing
+      size_factor <- 1.0
+      if (!is.null(x$output_width)) {
+        if (x$output_width < 5) {
+          size_factor <- 1.2  # 20% more spacing for small figures
+        } else if (x$output_width > 8) {
+          size_factor <- 0.9  # 10% less spacing for large figures
         }
       }
-    }
 
-    # Determine bracket layer spacing adaptively based on:
-    # 1. Label type (asterisks vs text)
-    # 2. Text size (sig_size)
-    # 3. Figure size (output_width)
-
-    all_asterisks <- all(grepl("^\\*+$", x$comparisons$label))
-
-    # Base spacing
-    if (all_asterisks) {
-      base_spacing <- 0.06  # Narrow for asterisks
-    } else {
-      base_spacing <- 0.10  # Wider for text
-    }
-
-    # Adjust for figure size - smaller figures need relatively more spacing
-    size_factor <- 1.0
-    if (!is.null(x$output_width)) {
-      if (x$output_width < 5) {
-        size_factor <- 1.2  # 20% more spacing for small figures
-      } else if (x$output_width > 8) {
-        size_factor <- 0.9  # 10% less spacing for large figures
+      # Adjust for text size - larger text needs more spacing
+      text_factor <- 1.0
+      if (!is.null(x$sig_size)) {
+        # Normalize to size 12 as baseline
+        text_factor <- x$sig_size / 12
       }
-    }
 
-    # Adjust for text size - larger text needs more spacing
-    text_factor <- 1.0
-    if (!is.null(x$sig_size)) {
-      # Normalize to size 12 as baseline
-      text_factor <- x$sig_size / 12
+      # Calculate final spacing
+      layer_spacing <- base_spacing * size_factor * text_factor
     }
-
-    # Calculate final spacing
-    layer_spacing <- base_spacing * size_factor * text_factor
 
     # Draw each bracket
     for (i in seq_len(nrow(x$comparisons))) {

@@ -17,6 +17,7 @@ Custom legends with statistical comparison brackets for ggplot2
 - ✅ **Publication Ready** - Works with regular `ggsave()` for easy figure export
 - ✅ **Auto-Scaling** - Legend symbol size and spacing scale automatically with text_size (v1.1.0)
 - ✅ **Manual Override** - Fine-tune line_length, line_width, item_spacing individually (v1.2.0)
+- ✅ **Bracket Layer Control** - Adjust spacing between bracket layers with bracket_layer_spacing (v1.3.0)
 
 ## Installation
 
@@ -305,6 +306,27 @@ p + legend_bracket(..., text_size = 12, item_spacing = 0.12)
 |----------------|---------------------|
 | ![](examples/example9_manual_line_width.png) | ![](examples/example9_manual_item_spacing.png) |
 
+### Example 10: Bracket Layer Spacing (v1.3.0)
+
+Control the horizontal spacing between bracket layers when multiple comparisons overlap:
+
+```r
+# Default auto-spacing (calculated based on text size and label type)
+p + legend_bracket(labels, colors, comparisons,
+                   position = "topleft",
+                   output_width = 6, output_height = 4)
+
+# Manual bracket layer spacing - very tight
+p + legend_bracket(..., bracket_layer_spacing = 0.02)
+
+# Manual bracket layer spacing - very wide
+p + legend_bracket(..., bracket_layer_spacing = 0.20)
+```
+
+| Default (auto) | Very Tight (0.02) | Very Wide (0.20) |
+|----------------|-------------------|------------------|
+| ![](examples/example10_bracket_spacing_default.png) | ![](examples/example10_bracket_spacing_tight.png) | ![](examples/example10_bracket_spacing_wide.png) |
+
 ## Main Functions
 
 ### `add_bracket_comparisons()`
@@ -336,6 +358,7 @@ Add custom legend with brackets to a ggplot object.
 - `line_length` - Manual override for legend symbol line length (default: NULL = auto-scaled by text_size)
 - `line_width` - Manual override for legend symbol line width (default: NULL = auto-scaled by text_size)
 - `item_spacing` - Manual override for vertical spacing between legend items (default: NULL = auto-scaled by text_size)
+- `bracket_layer_spacing` - Manual override for horizontal spacing between bracket layers (default: NULL = auto-calculated)
 
 **Returns:** A vbracket_legend object that can be added to ggplot
 
@@ -420,7 +443,7 @@ The package includes comprehensive tutorial scripts:
 
 ### `getting_started.R`
 
-Complete beginner's guide with 8 examples covering:
+Complete beginner's guide with 10 examples covering:
 1. Basic usage with single comparison
 2. Multiple asterisks (*, **, ***)
 3. P-value notation (p<0.001, ns)
@@ -429,6 +452,8 @@ Complete beginner's guide with 8 examples covering:
 6. Different plot sizes
 7. Font family support
 8. Custom text sizes
+9. Manual override (line_length, line_width, item_spacing)
+10. Bracket layer spacing control
 
 **Run the tutorial:**
 ```r

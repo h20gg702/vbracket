@@ -494,6 +494,77 @@ ggsave(file.path(output_dir, "example9_manual_item_spacing.png"), p9_spacing, wi
 cat("✅ Saved: example9_manual_item_spacing.png\n\n")
 
 # ----------------------------------------------------------------------------
+# EXAMPLE 10: Bracket Layer Spacing Control (v1.3.0)
+# ----------------------------------------------------------------------------
+
+cat("============================================================================\n")
+cat("EXAMPLE 10: Bracket Layer Spacing Control (v1.3.0)\n")
+cat("============================================================================\n\n")
+
+cat("NEW in v1.3.0: Control the horizontal spacing between bracket layers:\n")
+cat("  - bracket_layer_spacing: Manual override for spacing between bracket layers\n")
+cat("If NULL (default), spacing is auto-calculated based on text size and label type.\n\n")
+
+# Default auto-spacing
+p10_default <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = volume - sd, ymax = volume + sd), width = 1.2, linewidth = 0.8) +
+  scale_color_manual(values = colors) +
+  scale_x_continuous(breaks = c(0, 5, 10, 15, 20, 25), limits = c(0, 27)) +
+  scale_y_continuous(breaks = seq(0, 2500, 500), limits = c(0, 2500)) +
+  labs(title = "Default bracket spacing (auto)", x = "Days",
+       y = expression(paste("Tumor Volume (mm"^3, ")"))) +
+  theme_classic(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none") +
+  legend_bracket(labels = groups, colors = colors, comparisons = comps2,
+                 position = "topleft", text_size = 12,
+                 output_width = 6, output_height = 4)
+ggsave(file.path(output_dir, "example10_bracket_spacing_default.png"), p10_default, width = 6, height = 4, dpi = 300)
+cat("✅ Saved: example10_bracket_spacing_default.png\n")
+
+# Very tight bracket layer spacing
+p10_tight <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = volume - sd, ymax = volume + sd), width = 1.2, linewidth = 0.8) +
+  scale_color_manual(values = colors) +
+  scale_x_continuous(breaks = c(0, 5, 10, 15, 20, 25), limits = c(0, 27)) +
+  scale_y_continuous(breaks = seq(0, 2500, 500), limits = c(0, 2500)) +
+  labs(title = "Very Tight: bracket_layer_spacing = 0.02", x = "Days",
+       y = expression(paste("Tumor Volume (mm"^3, ")"))) +
+  theme_classic(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none") +
+  legend_bracket(labels = groups, colors = colors, comparisons = comps2,
+                 position = "topleft", text_size = 12,
+                 bracket_layer_spacing = 0.02,  # Manual override - very tight
+                 output_width = 6, output_height = 4)
+ggsave(file.path(output_dir, "example10_bracket_spacing_tight.png"), p10_tight, width = 6, height = 4, dpi = 300)
+cat("✅ Saved: example10_bracket_spacing_tight.png\n")
+
+# Very wide bracket layer spacing
+p10_wide <- ggplot(df_line, aes(x = days, y = volume, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = volume - sd, ymax = volume + sd), width = 1.2, linewidth = 0.8) +
+  scale_color_manual(values = colors) +
+  scale_x_continuous(breaks = c(0, 5, 10, 15, 20, 25), limits = c(0, 27)) +
+  scale_y_continuous(breaks = seq(0, 2500, 500), limits = c(0, 2500)) +
+  labs(title = "Very Wide: bracket_layer_spacing = 0.20", x = "Days",
+       y = expression(paste("Tumor Volume (mm"^3, ")"))) +
+  theme_classic(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none") +
+  legend_bracket(labels = groups, colors = colors, comparisons = comps2,
+                 position = "topleft", text_size = 12,
+                 bracket_layer_spacing = 0.20,  # Manual override - very wide
+                 output_width = 6, output_height = 4)
+ggsave(file.path(output_dir, "example10_bracket_spacing_wide.png"), p10_wide, width = 6, height = 4, dpi = 300)
+cat("✅ Saved: example10_bracket_spacing_wide.png\n\n")
+
+# ----------------------------------------------------------------------------
 # Summary
 # ----------------------------------------------------------------------------
 
@@ -512,7 +583,8 @@ cat("  5. ✅ Custom bracket margin adjustment\n")
 cat("  6. ✅ Adaptive positioning for different plot sizes\n")
 cat("  7. ✅ Automatic font family inheritance\n")
 cat("  8. ✅ Custom text sizes with auto-scaling (v1.1.0)\n")
-cat("  9. ✅ Manual override for line_length, line_width, item_spacing (v1.2.0)\n\n")
+cat("  9. ✅ Manual override for line_length, line_width, item_spacing (v1.2.0)\n")
+cat(" 10. ✅ Bracket layer spacing control (v1.3.0)\n\n")
 
 cat("Main Functions:\n")
 cat("  - add_bracket_comparisons(): Define group comparisons\n")
@@ -529,7 +601,8 @@ cat("  - text_size: Legend text size (default: 10, also controls auto-scaling)\n
 cat("  - sig_size: Significance symbol size (default: 11)\n")
 cat("  - line_length: Manual override for legend line length (default: NULL = auto)\n")
 cat("  - line_width: Manual override for legend line width (default: NULL = auto)\n")
-cat("  - item_spacing: Manual override for item spacing (default: NULL = auto)\n\n")
+cat("  - item_spacing: Manual override for item spacing (default: NULL = auto)\n")
+cat("  - bracket_layer_spacing: Manual override for bracket layer spacing (default: NULL = auto)\n\n")
 
 cat("Next Steps:\n")
 cat("  1. Review the example plots in the output directory\n")

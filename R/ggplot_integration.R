@@ -33,6 +33,7 @@ NULL
 #' @param line_length Numeric. Manual override for legend symbol line length (default NULL = auto-scaled by text_size)
 #' @param line_width Numeric. Manual override for legend symbol line width (default NULL = auto-scaled by text_size)
 #' @param item_spacing Numeric. Manual override for vertical spacing between legend items (default NULL = auto-scaled by text_size)
+#' @param bracket_layer_spacing Numeric. Manual override for horizontal spacing between bracket layers (default NULL = auto-calculated)
 #'
 #' @return A vbracket_legend object
 #' @export
@@ -76,7 +77,8 @@ legend_bracket <- function(labels,
                           legend_y = NULL,
                           line_length = NULL,
                           line_width = NULL,
-                          item_spacing = NULL) {
+                          item_spacing = NULL,
+                          bracket_layer_spacing = NULL) {
 
   # Create object with all parameters
   structure(
@@ -105,7 +107,8 @@ legend_bracket <- function(labels,
       legend_y = legend_y,
       line_length = line_length,
       line_width = line_width,
-      item_spacing = item_spacing
+      item_spacing = item_spacing,
+      bracket_layer_spacing = bracket_layer_spacing
     ),
     class = "vbracket_legend"
   )
@@ -157,13 +160,13 @@ ggplot_add.vbracket_legend <- function(object, plot, ...) {
       if (is.null(object$legend_x)) {
         aspect_ratio <- output_width / output_height
         if (output_width < 4) {
-          x_left <- 0.25  # 25% from left for very small plots (moved closer)
+          x_left <- 0.20  # 20% from left for very small plots
         } else if (output_width < 5) {
-          x_left <- 0.10  # 10% from left for 4x3 plots (closer to Y-axis)
+          x_left <- 0.08  # 8% from left for 4x3 plots (closer to Y-axis)
         } else if (output_width < 7 || aspect_ratio < 1) {
-          x_left <- 0.18  # 18% from left for narrow/tall plots
+          x_left <- 0.10  # 10% from left for narrow/tall plots
         } else {
-          x_left <- 0.12  # 12% from left for 8x6+ plots (keep original)
+          x_left <- 0.08  # 8% from left for 8x6+ plots (closer to Y-axis)
         }
       } else {
         x_left <- object$legend_x  # Use custom legend_x
@@ -171,7 +174,7 @@ ggplot_add.vbracket_legend <- function(object, plot, ...) {
 
       # Default Y positions (unless legend_y is provided)
       if (is.null(object$legend_y)) {
-        y_top <- 0.88
+        y_top <- 0.92  # Higher position
         y_bottom <- 0.12 + (n_items * 0.05)
       } else {
         y_top <- object$legend_y
@@ -215,7 +218,8 @@ ggplot_add.vbracket_legend <- function(object, plot, ...) {
       bracket_margin = object$bracket_margin,
       line_length = object$line_length,
       line_width = object$line_width,
-      item_spacing = object$item_spacing
+      item_spacing = object$item_spacing,
+      bracket_layer_spacing = object$bracket_layer_spacing
     )
 
     # Add legend as annotation (actual ggplot layer)
@@ -280,18 +284,18 @@ print_vbracket_plot <- function(x, ...) {
     # Adaptive X position for left-aligned legends
     # Smaller plots need progressively more spacing from Y-axis
     if (plot_width < 4) {
-      x_left <- 0.30  # 30% from left for very small plots (< 4in)
+      x_left <- 0.20  # 20% from left for very small plots (< 4in)
     } else if (plot_width < 5) {
-      x_left <- 0.25  # 25% from left for small plots (< 5in)
+      x_left <- 0.08  # 8% from left for small plots (< 5in)
     } else if (plot_width < 7 || aspect_ratio < 1) {
-      x_left <- 0.18  # 18% from left for narrow plots (< 7in or tall)
+      x_left <- 0.10  # 10% from left for narrow plots (< 7in or tall)
     } else {
-      x_left <- 0.12  # 12% from left for normal/wide plots
+      x_left <- 0.08  # 8% from left for normal/wide plots
     }
 
     if (vb_legend$position == "topleft") {
       vb_legend$x <- x_left
-      vb_legend$y <- 0.88
+      vb_legend$y <- 0.92  # Higher position
     } else if (vb_legend$position == "topright") {
       vb_legend$x <- 0.98 - vb_legend$width
       vb_legend$y <- 0.88
@@ -354,7 +358,8 @@ print_vbracket_plot <- function(x, ...) {
     sig_face = vb_legend$sig_face,
     line_length = vb_legend$line_length,
     line_width = vb_legend$line_width,
-    item_spacing = vb_legend$item_spacing
+    item_spacing = vb_legend$item_spacing,
+    bracket_layer_spacing = vb_legend$bracket_layer_spacing
   )
 
   grid::grid.draw(legend_grobs)
