@@ -26,7 +26,11 @@ legend_bracket(
   output_height = NULL,
   bracket_margin = NULL,
   legend_x = NULL,
-  legend_y = NULL
+  legend_y = NULL,
+  line_length = NULL,
+  line_width = NULL,
+  item_spacing = NULL,
+  bracket_layer_spacing = NULL
 )
 }
 \arguments{
@@ -73,6 +77,14 @@ legend_bracket(
 \item{legend_x}{Numeric. Custom X position for legend box (0-1 scale, overrides adaptive positioning)}
 
 \item{legend_y}{Numeric. Custom Y position for legend box (0-1 scale, overrides adaptive positioning)}
+
+\item{line_length}{Numeric. Manual override for legend symbol line length (default NULL = auto-scaled by text_size)}
+
+\item{line_width}{Numeric. Manual override for legend symbol line width (default NULL = auto-scaled by text_size)}
+
+\item{item_spacing}{Numeric. Manual override for vertical spacing between legend items (default NULL = auto-scaled by text_size)}
+
+\item{bracket_layer_spacing}{Numeric. Manual override for horizontal spacing between bracket layers (default NULL = auto-calculated)}
 }
 \value{
 A vbracket_legend object

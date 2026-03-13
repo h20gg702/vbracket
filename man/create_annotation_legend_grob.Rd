@@ -22,7 +22,11 @@ create_annotation_legend_grob(
   sig_face = "plain",
   output_width = 8,
   output_height = 6,
-  bracket_margin = NULL
+  bracket_margin = NULL,
+  line_length = NULL,
+  line_width = NULL,
+  item_spacing = NULL,
+  bracket_layer_spacing = NULL
 )
 }
 \description{

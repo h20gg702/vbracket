@@ -21,7 +21,11 @@ draw_legend_with_brackets(
   sig_size = 11,
   sig_face = "plain",
   output_width = NULL,
-  output_height = NULL
+  output_height = NULL,
+  line_length = NULL,
+  line_width = NULL,
+  item_spacing = NULL,
+  bracket_layer_spacing = NULL
 )
 }
 \arguments{
@@ -58,6 +62,14 @@ draw_legend_with_brackets(
 \item{output_width}{Numeric. Output figure width in inches (optional, for METHOD 2)}
 
 \item{output_height}{Numeric. Output figure height in inches (optional, for METHOD 2)}
+
+\item{line_length}{Numeric. Manual override for legend symbol line length (default NULL = auto-scaled by text_size)}
+
+\item{line_width}{Numeric. Manual override for legend symbol line width (default NULL = auto-scaled by text_size)}
+
+\item{item_spacing}{Numeric. Manual override for vertical spacing between legend items (default NULL = auto-scaled by text_size)}
+
+\item{bracket_layer_spacing}{Numeric. Manual override for horizontal spacing between bracket layers (default NULL = auto-calculated)}
 }
 \value{
 A gTree object containing the custom legend

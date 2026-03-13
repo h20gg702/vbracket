@@ -20,6 +20,10 @@
 #' @param sig_face Character. Font face for significance symbols (default "plain")
 #' @param output_width Numeric. Output figure width in inches (optional, for METHOD 2)
 #' @param output_height Numeric. Output figure height in inches (optional, for METHOD 2)
+#' @param line_length Numeric. Manual override for legend symbol line length (default NULL = auto-scaled by text_size)
+#' @param line_width Numeric. Manual override for legend symbol line width (default NULL = auto-scaled by text_size)
+#' @param item_spacing Numeric. Manual override for vertical spacing between legend items (default NULL = auto-scaled by text_size)
+#' @param bracket_layer_spacing Numeric. Manual override for horizontal spacing between bracket layers (default NULL = auto-calculated)
 #'
 #' @return A gTree object containing the custom legend
 #' @export
