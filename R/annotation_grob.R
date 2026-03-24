@@ -94,9 +94,12 @@ makeContent.vbracket_annotation_grob <- function(x) {
   text_start <- line_end + 0.01           # Text starts after line + small gap
 
   # Background rectangle (white, no border)
+  # Use unit("npc") so coordinates are scale-independent within annotation_custom viewport.
+  # Without explicit units, ggplot2 interprets bare numbers as native (data) coordinates,
+  # which breaks for log10 scale (e.g., y=0.27 in log10 space = 10^0.27 ≈ 1.86 SF, above panel).
   bg_rect <- rectGrob(
-    x = x$x, y = x$y,
-    width = x$width, height = height,
+    x = unit(x$x, "npc"), y = unit(x$y, "npc"),
+    width = unit(x$width, "npc"), height = unit(height, "npc"),
     just = c("left", "top"),
     gp = gpar(fill = "white", col = NA)
   )
@@ -108,8 +111,8 @@ makeContent.vbracket_annotation_grob <- function(x) {
     title_y_offset <- 0.01 * scale_factor
     title_grob <- textGrob(
       x$title,
-      x = x$x + x$width/2,
-      y = x$y - title_y_offset,
+      x = unit(x$x + x$width/2, "npc"),
+      y = unit(x$y - title_y_offset, "npc"),
       just = c("center", "top"),
       gp = gpar(fontsize = x$title_size, fontface = x$title_face, fontfamily = x$text_family)
     )
@@ -126,8 +129,8 @@ makeContent.vbracket_annotation_grob <- function(x) {
 
     # Color line (scaled)
     line_grob <- linesGrob(
-      x = c(x$x + line_start, x$x + line_end),
-      y = c(item_y, item_y),
+      x = unit(c(x$x + line_start, x$x + line_end), "npc"),
+      y = unit(c(item_y, item_y), "npc"),
       gp = gpar(col = x$colors[i], lwd = line_width)
     )
     grobs <- gList(grobs, line_grob)
@@ -135,8 +138,8 @@ makeContent.vbracket_annotation_grob <- function(x) {
     # Text label (position adjusted for scaled line)
     text_grob <- textGrob(
       x$labels[i],
-      x = x$x + text_start,
-      y = item_y,
+      x = unit(x$x + text_start, "npc"),
+      y = unit(item_y, "npc"),
       just = c("left", "center"),
       gp = gpar(fontsize = x$text_size, fontface = x$text_face, fontfamily = x$text_family)
     )
@@ -146,7 +149,7 @@ makeContent.vbracket_annotation_grob <- function(x) {
   # Draw brackets if comparisons provided
   if (!is.null(x$comparisons) && nrow(x$comparisons) > 0) {
 
-    # Create position map
+    # Create position map (NPC values, used later with unit("npc"))
     item_positions <- setNames(
       x$y - y_offset - (seq_along(x$labels) * item_height),
       x$labels
@@ -243,24 +246,24 @@ makeContent.vbracket_annotation_grob <- function(x) {
 
       # Vertical line
       bracket_line <- linesGrob(
-        x = c(bracket_x, bracket_x),
-        y = c(y1, y2),
+        x = unit(c(bracket_x, bracket_x), "npc"),
+        y = unit(c(y1, y2), "npc"),
         gp = gpar(col = "black", lwd = 1)
       )
       grobs <- gList(grobs, bracket_line)
 
       # Top connector
       top_connector <- linesGrob(
-        x = c(bracket_x - 0.015, bracket_x),
-        y = c(y1, y1),
+        x = unit(c(bracket_x - 0.015, bracket_x), "npc"),
+        y = unit(c(y1, y1), "npc"),
         gp = gpar(col = "black", lwd = 1)
       )
       grobs <- gList(grobs, top_connector)
 
       # Bottom connector
       bottom_connector <- linesGrob(
-        x = c(bracket_x - 0.015, bracket_x),
-        y = c(y2, y2),
+        x = unit(c(bracket_x - 0.015, bracket_x), "npc"),
+        y = unit(c(y2, y2), "npc"),
         gp = gpar(col = "black", lwd = 1)
       )
       grobs <- gList(grobs, bottom_connector)
@@ -278,8 +281,8 @@ makeContent.vbracket_annotation_grob <- function(x) {
       }
       sig_grob <- textGrob(
         label,
-        x = bracket_x + 0.02,
-        y = sig_y,
+        x = unit(bracket_x + 0.02, "npc"),
+        y = unit(sig_y, "npc"),
         just = c("left", "center"),
         gp = gpar(fontsize = x$sig_size, fontface = x$sig_face, fontfamily = x$text_family)
       )
