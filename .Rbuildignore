@@ -10,3 +10,4 @@
 ^\.gitignore$
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+^Rplots\.pdf$
