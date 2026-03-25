@@ -196,6 +196,11 @@ ggplot_add.vbracket_legend <- function(object, plot, ...) {
       }
     }
 
+    # Ensure width has a default value (may be NULL if x/y were specified manually)
+    if (is.null(object$width)) {
+      object$width <- 0.25
+    }
+
     # Create a self-contained grob for annotation_custom
     legend_grob <- create_annotation_legend_grob(
       labels = object$labels,
@@ -222,12 +227,39 @@ ggplot_add.vbracket_legend <- function(object, plot, ...) {
       bracket_layer_spacing = object$bracket_layer_spacing
     )
 
+    # Detect log scale on y/x axis.
+    # With log scale, ymin=-Inf causes: log10(-Inf)=NaN → squish_infinite(NaN)=NaN
+    # → range(c(NaN,1), na.rm=TRUE)=c(1,1) → viewport height=0 → all items collapse.
+    # Fix: use 0 instead of -Inf. log10(0)=-Inf → squish_infinite(-Inf)=0 → full panel.
+    has_log_y <- tryCatch({
+      any(sapply(plot$scales$scales, function(s) {
+        tryCatch({
+          if (!("y" %in% s$aesthetics)) return(FALSE)
+          tn <- tryCatch(s$trans$name, error = function(e) "")
+          grepl("log", tn, ignore.case = TRUE)
+        }, error = function(e) FALSE)
+      }))
+    }, error = function(e) FALSE)
+
+    has_log_x <- tryCatch({
+      any(sapply(plot$scales$scales, function(s) {
+        tryCatch({
+          if (!("x" %in% s$aesthetics)) return(FALSE)
+          tn <- tryCatch(s$trans$name, error = function(e) "")
+          grepl("log", tn, ignore.case = TRUE)
+        }, error = function(e) FALSE)
+      }))
+    }, error = function(e) FALSE)
+
+    ymin_val <- if (has_log_y) 0 else -Inf
+    xmin_val <- if (has_log_x) 0 else -Inf
+
     # Add legend as annotation (actual ggplot layer)
     plot <- plot +
       annotation_custom(
         grob = legend_grob,
-        xmin = -Inf, xmax = Inf,
-        ymin = -Inf, ymax = Inf
+        xmin = xmin_val, xmax = Inf,
+        ymin = ymin_val, ymax = Inf
       )
 
   } else {
