@@ -3,7 +3,7 @@ Type: Package
 Title: Custom Legends with Statistical Comparison Brackets
 Version: 1.4.0
 Authors@R: person("Yoshiaki", "Sato",
-                  email = "h20gg702@outlook.jp",
+                  email = "lascia333@gmail.com",
                   role = c("aut", "cre"),
                   comment = c(ORCID = "0000-0003-3375-5189"))
 Description: Add publication-quality custom legends with vertical brackets. Designed for displaying statistical comparisons between groups,
